@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if category_posts %}
+<h3>{{ cats }}</h3>
+
+    {% for post in category_posts %}
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <li><a href="{% url 'article-detail' post.pk %}" class="text-dark h5">{{ post.title }}</a> - {{ post.author.first_name }} {{ post.author.last_name }}
+                            <p>Category: {{ post.category }}</p>
+                        {{ post.body | slice:"100" }}</li>
+                        <div>
+                            {% if user.id == post.author.id %}
+                            <a class="text-primary" href="{% url 'update_post' post.id %}">EDIT</a>
+                            <a class="text-danger" href="{% url 'delete_post' post.id %}">Delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+{% else %}
+    <h4>This category does not exists...!</h4>
+{% endif %}
+{% endblock %}
